@@ -33,7 +33,7 @@ public class TickerCommand  implements Command {
         s = getStock(ticker);
         //no other arguments
         if(args.length == 1) {
-            printStockInfo(args, event);
+            printStockInfo(event);
         }
         //extra arguments
         else {
@@ -68,6 +68,20 @@ public class TickerCommand  implements Command {
                 case "open" :
                     event.getTextChannel().sendMessage(s.getSymbol() + " | Open price: " + s.getOpen()).queue();
                     break;
+                case "full" :
+                    EmbedBuilder em = new EmbedBuilder();
+                    em.setColor(Color.red).setTitle(s.getSymbol() + "    |    " + s.getName() + "    |    " + s.getChg() + "%");
+                    User author = event.getAuthor();
+                    em.setAuthor("@" + author.getName(), author.getAvatarId(),author.getEffectiveAvatarUrl());
+                    em.setDescription("Price: " + s.getPrice() + " | " + "Day high: " + s.getDayhigh() + " | " + "Day low: " + s.getDaylow() + newline +newline +
+                    "52wk high: " + s.getWeek52high() + " | " + "52week low: " + s.getWeek52low() + " | " + "Volume: " + s.getVolume());
+                    em.setFooter("Data collected from Yahoo Finance","https://upload.wikimedia.org/wikipedia/commons/5/59/Empty.png");
+                    em.setVideo("https://www.youtube.com/watch?v=VPbg7l9pL90&t=0s");
+                    em.build();
+                    MessageEmbed embed = em.build();
+                    event.getTextChannel()
+                            .sendMessage(embed).queue();
+                    break;
                 default:
                     event.getTextChannel().sendMessage("Please use valid arguments, see 'help for info").queue();
             }
@@ -76,29 +90,30 @@ public class TickerCommand  implements Command {
 
     /**
      * Method to print ticker info.
-     * @param args
      * @param event
      */
-    public void printStockInfo(String[] args, MessageReceivedEvent event) {
+    public void printStockInfo(MessageReceivedEvent event) {
         if(!(s.getName().equals("N/A"))) {
             EmbedBuilder em = new EmbedBuilder();
             em.setColor(Color.red).setTitle(s.getSymbol() + "    |    " + s.getName() + "    |    " + s.getChg() + "%");
             User author = event.getAuthor();
             em.setAuthor("@" + author.getName(), author.getAvatarId(),author.getEffectiveAvatarUrl());
             em.setDescription("Price: " + s.getPrice() + " | " + "Day high: " + s.getDayhigh() + " | " + "Day low: " + s.getDaylow());
+            em.setImage("http://stockcharts.com/c-sc/sc?s=" + s.getSymbol() + "&p=D&b=5&g=0&i=0&r=1481397950622.png");
+            em.setUrl("http://finance.yahoo.com/quote/" + s.getSymbol() + "?p=" + s.getSymbol());
             em.setFooter("Data collected from Yahoo Finance","https://upload.wikimedia.org/wikipedia/commons/5/59/Empty.png");
-            em.build();
             MessageEmbed embed = em.build();
             event.getTextChannel()
                     .sendMessage(embed).queue();
         }
         else {
-            event.getTextChannel() .sendMessage(s.getSymbol() + " is not a valid ticker").queue();
+            event.getTextChannel().sendMessage(s.getSymbol() + " is not a valid ticker").queue();
         }
     }
 
     @Override
     public void executed(boolean success, MessageReceivedEvent event) {
-        return;
+        event.getTextChannel()
+                .sendMessage("http://stockcharts.com/c-sc/sc?s=" + s.getSymbol() + "&p=D&b=5&g=0&i=0&r=1481397950622.png").queue();
     }
 }

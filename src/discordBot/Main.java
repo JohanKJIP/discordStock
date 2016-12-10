@@ -1,7 +1,6 @@
 package discordBot;
 
 import discordBot.commands.*;
-//import discordBot.commands.MathProblem.AnswerProblem;
 import discordBot.commands.StockFetcher.TickerCommand;
 import discordBot.utils.CommandParser;
 import net.dv8tion.jda.core.AccountType;
