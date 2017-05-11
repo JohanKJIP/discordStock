@@ -24,7 +24,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            jda = new JDABuilder(AccountType.BOT).addListener(new BotListener()).setToken("MjU1NzQ1MzUyNTU1MTY3NzQ1.CyiE_Q.hpnR8UXFKsgY8Te1AfrZpFZJHuA").buildBlocking();
+            jda = new JDABuilder(AccountType.BOT).addListener(new BotListener()).setToken("Token").buildBlocking();
             jda.setAutoReconnect(true);
         } catch (Exception e) {
             e.printStackTrace();
